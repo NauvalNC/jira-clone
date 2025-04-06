@@ -11,7 +11,8 @@ interface PageProps {
 
 const Page = async ({params}: PageProps) => {
     await checkAuthenticatedRoute(true, "/sign-in");
-    const initialValues = await getWorkspace({workspaceId: params.workspaceId});
+    const {workspaceId} = await params;
+    const initialValues = await getWorkspace({workspaceId});
     return (
         <div className="w-full lg:max-w-xl">
             <EditWorkspaceForm initialValue={initialValues}/>

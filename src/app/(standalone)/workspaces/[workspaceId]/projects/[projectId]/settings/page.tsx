@@ -11,7 +11,8 @@ interface PageProps {
 
 const Page = async ({params}: PageProps) => {
     await checkAuthenticatedRoute(true, "/sign-in");
-    const initialValues = await getProject({projectId: params.projectId});
+    const {projectId} = await params;
+    const initialValues = await getProject({projectId});
     return (
         <div className="w-full lg:max-w-xl">
             <EditProjectForm initialValue={initialValues}/>

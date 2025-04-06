@@ -12,8 +12,8 @@ interface PageProps {
 
 const Page = async ({params}: PageProps) => {
     await checkAuthenticatedRoute(true, "/sign-in");
-
-    const workspaceInfo = await getWorkspaceInfo({workspaceId: params.workspaceId});
+    const {workspaceId} = await params;
+    const workspaceInfo = await getWorkspaceInfo({workspaceId});
     if (!workspaceInfo) {
         redirect("/");
     }
