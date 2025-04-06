@@ -5,6 +5,7 @@ import {createProjectSchema, getProjectsSchema, updateProjectSchema} from "@/fea
 import {getMember} from "@/features/members/utils";
 import {DATABASE_ID, IMAGES_BUCKET_ID, PROJECTS_ID} from "@/config";
 import {ID, Query} from "node-appwrite";
+import {Project} from "@/features/projects/types";
 
 const app = new Hono()
     .get(
@@ -30,7 +31,7 @@ const app = new Hono()
                 return c.json({error: "Unauthorized"}, 401);
             }
 
-            const projects = await databases.listDocuments(
+            const projects = await databases.listDocuments<Project>(
                 DATABASE_ID,
                 PROJECTS_ID,
                 [
@@ -97,7 +98,7 @@ const app = new Hono()
             const {projectId} = c.req.param();
             const {name, image} = c.req.valid("form");
 
-            const existingProject = await databases.getDocument(
+            const existingProject = await databases.getDocument<Project>(
                 DATABASE_ID,
                 PROJECTS_ID,
                 projectId
@@ -124,7 +125,7 @@ const app = new Hono()
                 uploadedImageUrl = image;
             }
 
-            const project = await databases.updateDocument(
+            const project = await databases.updateDocument<Project>(
                 DATABASE_ID,
                 PROJECTS_ID,
                 projectId,
@@ -145,7 +146,7 @@ const app = new Hono()
             const user = c.get("user");
             const {projectId} = c.req.param();
 
-            const existingProject = await databases.getDocument(
+            const existingProject = await databases.getDocument<Project>(
                 DATABASE_ID,
                 PROJECTS_ID,
                 projectId

@@ -8,6 +8,7 @@ import {ID, Query} from "node-appwrite";
 import {createAdminClient} from "@/lib/appwrite";
 import {Project} from "@/features/projects/types";
 import {Member} from "@/features/members/types";
+import {Task} from "@/features/tasks/types";
 
 const app = new Hono()
     .get(
@@ -60,7 +61,7 @@ const app = new Hono()
                 query.push(Query.search("name", search));
             }
 
-            const tasks = await databases.listDocuments(
+            const tasks = await databases.listDocuments<Task>(
                 DATABASE_ID,
                 TASKS_ID,
                 query
@@ -126,7 +127,7 @@ const app = new Hono()
                 return c.json({error: "Unauthorized"});
             }
 
-            const highestPositionTask = await databases.listDocuments(
+            const highestPositionTask = await databases.listDocuments<Task>(
                 DATABASE_ID,
                 TASKS_ID,
                 [

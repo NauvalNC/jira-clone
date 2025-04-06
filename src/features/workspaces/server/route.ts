@@ -4,7 +4,7 @@ import {sessionMiddleware} from "@/lib/session-middleware";
 import {createWorkspaceSchema, joinWorkspaceSchema, updateWorkspaceSchema} from "@/features/workspaces/schemas";
 import {DATABASE_ID, IMAGES_BUCKET_ID, MEMBERS_ID, WORKSPACES_ID} from "@/config";
 import {ID, Query} from "node-appwrite";
-import {MemberRole} from "@/features/members/types";
+import {Member, MemberRole} from "@/features/members/types";
 import {generateInviteCode} from "@/lib/utils";
 import {getMember} from "@/features/members/utils";
 import {Workspace} from "@/features/workspaces/types";
@@ -17,7 +17,7 @@ const app = new Hono()
             const databases = c.get("databases");
             const user = c.get("user");
 
-            const members = await databases.listDocuments(
+            const members = await databases.listDocuments<Member>(
                 DATABASE_ID,
                 MEMBERS_ID,
                 [Query.equal("userId", user.$id)],
@@ -28,7 +28,7 @@ const app = new Hono()
             }
 
             const workspaceIds = members.documents.map((member) => member.workspaceId);
-            const workspaces = await databases.listDocuments(
+            const workspaces = await databases.listDocuments<Workspace>(
                 DATABASE_ID,
                 WORKSPACES_ID,
                 [
@@ -114,7 +114,7 @@ const app = new Hono()
                 uploadedImageUrl = image;
             }
 
-            const workspace = await databases.updateDocument(
+            const workspace = await databases.updateDocument<Workspace>(
                 DATABASE_ID,
                 WORKSPACES_ID,
                 workspaceId,
@@ -162,7 +162,7 @@ const app = new Hono()
                 return c.json({error: "Unauthorized"}, 401);
             }
 
-            const workspace = await databases.updateDocument(
+            const workspace = await databases.updateDocument<Workspace>(
                 DATABASE_ID,
                 WORKSPACES_ID,
                 workspaceId,

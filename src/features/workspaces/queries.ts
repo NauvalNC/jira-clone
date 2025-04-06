@@ -4,6 +4,7 @@ import {redirect} from "next/navigation";
 import {getMember} from "@/features/members/utils";
 import {Workspace} from "@/features/workspaces/types";
 import {createSessionClient} from "@/lib/appwrite";
+import {Member} from "@/features/members/types";
 
 interface GetWorkspaceProps {
   workspaceId: string;
@@ -44,7 +45,7 @@ export const getWorkspaces = async () =>
     const {databases, account} = await createSessionClient();
     const user = await  account.get();
 
-    const members = await databases.listDocuments(
+    const members = await databases.listDocuments<Member>(
         DATABASE_ID,
         MEMBERS_ID,
         [Query.equal("userId", user.$id)],
@@ -55,7 +56,7 @@ export const getWorkspaces = async () =>
     }
 
     const workspaceIds = members.documents.map((member) => member.workspaceId);
-    return await databases.listDocuments(
+    return await databases.listDocuments<Workspace>(
         DATABASE_ID,
         WORKSPACES_ID,
         [
