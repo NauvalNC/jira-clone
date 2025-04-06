@@ -1,6 +1,6 @@
 import {useQueryState, parseAsBoolean} from "nuqs";
 
-const UseCreateWorkspaceModal = () => {
+const useCreateWorkspaceModal = () => {
     const [isOpen, setIsOpen] = useQueryState(
         "create-workspace",
         parseAsBoolean.withDefault(false).withOptions({clearOnDefault: true}),
@@ -17,4 +17,4 @@ const UseCreateWorkspaceModal = () => {
     }
 };
 
-export default UseCreateWorkspaceModal;
+export default useCreateWorkspaceModal;

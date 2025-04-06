@@ -1,8 +1,8 @@
 import {useQueryState, parseAsBoolean} from "nuqs";
 
-const useCreateProjectModal = () => {
+const useCreateTaskModal = () => {
     const [isOpen, setIsOpen] = useQueryState(
-        "create-project",
+        "create-task",
         parseAsBoolean.withDefault(false).withOptions({clearOnDefault: true}),
     );
 
@@ -17,4 +17,4 @@ const useCreateProjectModal = () => {
     }
 };
 
-export default useCreateProjectModal;
+export default useCreateTaskModal;
