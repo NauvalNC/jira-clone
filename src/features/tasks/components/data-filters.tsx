@@ -7,6 +7,7 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/c
 import {FolderIcon, ListChecksIcon, UserIcon} from "lucide-react";
 import useTasksFilters from "@/features/tasks/hooks/use-tasks-filters";
 import DatePicker from "@/components/date-picker";
+import {snakeCaseToTitleCase} from "@/lib/utils";
 
 interface DataFiltersProps {
     hideProjectFilter?: boolean;
@@ -63,7 +64,7 @@ const DataFilters = ({}: DataFiltersProps) => {
                     <SelectItem value="all">All Statuses</SelectItem>
                     {Object.values(TaskStatus).map((status) => (
                         <SelectItem key={status.toString()} value={status}>
-                            {status.toString()}
+                            {snakeCaseToTitleCase(status.toString())}
                         </SelectItem>
                     ))}
                 </SelectContent>
